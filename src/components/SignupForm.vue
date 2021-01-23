@@ -12,6 +12,13 @@
       <option value="designer">Web Designer</option>
     </select>
 
+
+    <label>Skills (use comma to separate your skills):</label>
+    <input type="text" v-model="tempSkill" @keyup="addSkill">
+    <div v-for="skill in skills" :key="skill" class="pill" >
+    <span @click="deleteSkill(skill)">  {{ skill }} </span>
+    </div>
+
     <div class="terms">
       <input type="checkbox" v-model="terms" required>
       <label>Accept terms and conditions</label>
@@ -47,8 +54,25 @@ export default {
       role: 'developer',
       terms: false,
       names: [],
+      skills: []
     }
-  }
+  },
+  methods: {
+      addSkill($event) {
+        const newSkill = this.tempSkill.substring(0, this.tempSkill.length - 1)
+        if (newSkill == " " ) this.tempSkill = ''
+        if($event.key === ',' && this.tempSkill) {
+        if (!this.skills.includes(newSkill)) {
+          console.log('triggered')
+          this.skills.push(newSkill)
+        }
+        this.tempSkill = ''
+      }
+    },
+    deleteSkill(skill){
+      this.skills = this.skills.filter(item => item !== skill)
+    }
+    }
 }
 </script>
 
@@ -85,5 +109,17 @@ export default {
     margin: 0 10px 0 0;
     position: relative;
     top: 2px;
+  }
+   .pill {
+    display: inline-block;
+    margin: 20px 10px 0 0;
+    padding: 6px 12px;
+    background: #eee;
+    border-radius: 20px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    font-weight: bold;
+    color: #777;
+    cursor: pointer;
   }
 </style>
